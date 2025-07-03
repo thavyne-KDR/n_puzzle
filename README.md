@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Sistema N-Puzzle - Documentação Completa
 
 ## Descrição do Projeto

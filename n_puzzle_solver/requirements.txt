@@ -1,0 +1,26 @@
+# N-Puzzle Solver - Dependências v3.0
+# Sistema Completo de Análise de Algoritmos de Busca
+# 
+# BÁSICO: Este projeto utiliza apenas bibliotecas padrão do Python.
+# Não são necessárias instalações adicionais para o funcionamento básico.
+#
+# AVANÇADO: Para funcionalidades completas de análise e visualização:
+matplotlib>=3.5.0     # Gráficos de performance e comparação
+pandas>=1.3.0         # Análise de dados em tabelas
+seaborn>=0.11.0       # Gráficos estatísticos elegantes
+numpy>=1.21.0         # Operações matemáticas otimizadas
+
+# Para análise avançada no notebook (opcional):
+jupyter>=1.0.0
+
+# Para instalar dependências completas:
+# pip install matplotlib pandas seaborn numpy jupyter
+
+# Versão mínima do Python requerida: 3.8+
+# Funcionalidades implementadas:
+# - Puzzles 8, 15, 24 números
+# - BFS, DFS, IDS, A*, Greedy Search  
+# - Heurísticas: Manhattan, Misplaced, Linear Conflict
+# - Análise comparativa com gráficos e tabelas
+# - Visualização de árvores de busca
+# - Métricas detalhadas de performance

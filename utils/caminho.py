@@ -63,6 +63,52 @@ class AnalisadorResultados:
             return min(sucessos, key=lambda x: x.memoria_maxima)
         else:
             return sucessos[0]
+    
+    def obter_melhor_resultado_score(self) -> ResultadoBusca:
+        """
+        Calcula o melhor algoritmo baseado em um score que considera:
+        - Profundidade da solução (30% - ótimo é importante)
+        - Eficiência (nós expandidos) (40% - muito importante)
+        - Tempo de execução (30% - importante)
+        """
+        sucessos = [r for r in self.resultados if r.sucesso]
+        if not sucessos:
+            return None
+        
+        if len(sucessos) == 1:
+            return sucessos[0]
+        
+        # Normalizar métricas (0 a 1, onde 0 é melhor)
+        min_prof = min(r.profundidade for r in sucessos)
+        max_prof = max(r.profundidade for r in sucessos)
+        
+        min_nos = min(r.nos_expandidos for r in sucessos)
+        max_nos = max(r.nos_expandidos for r in sucessos)
+        
+        min_tempo = min(r.tempo_execucao for r in sucessos)
+        max_tempo = max(r.tempo_execucao for r in sucessos)
+        
+        melhor_score = float('inf')
+        melhor_resultado = None
+        
+        for resultado in sucessos:
+            # Normalizar profundidade (0-1)
+            norm_prof = 0 if max_prof == min_prof else (resultado.profundidade - min_prof) / (max_prof - min_prof)
+            
+            # Normalizar nós expandidos (0-1)
+            norm_nos = 0 if max_nos == min_nos else (resultado.nos_expandidos - min_nos) / (max_nos - min_nos)
+            
+            # Normalizar tempo (0-1)
+            norm_tempo = 0 if max_tempo == min_tempo else (resultado.tempo_execucao - min_tempo) / (max_tempo - min_tempo)
+            
+            # Score final (pesos: profundidade 30%, nós 40%, tempo 30%)
+            score = (norm_prof * 0.3) + (norm_nos * 0.4) + (norm_tempo * 0.3)
+            
+            if score < melhor_score:
+                melhor_score = score
+                melhor_resultado = resultado
+        
+        return melhor_resultado
 
 class GeradorCaminhoVisual:
     @staticmethod

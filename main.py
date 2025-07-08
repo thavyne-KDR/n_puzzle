@@ -63,7 +63,7 @@ class SistemaNPuzzle:
             print("🔍 ALGORITMOS:")
             print("  1.🔄 BFS  2.⬇️ DFS  3.🔁 IDS  4.⭐ A*  5.🎯 Gulosa")
             print("⚙️ FUNÇÕES:")
-            print("  6.📊 Comparar  7.📚 Exemplo  8.🎲 Aleatório")
+            print("  6.📊 Comparar (8 algoritmos)  7.📚 Exemplo  8.🎲 Aleatório")
             print("  0.🚪 Sair")
             print(f"{'='*40}")
             
@@ -124,9 +124,15 @@ class SistemaNPuzzle:
             input("\n⏎ Enter para continuar...")
             return
             
-        print("\n🧠 A*: 1.Manhattan 2.Peças fora lugar")
-        escolha = input("🎯 Escolha (1-2): ").strip()
-        heuristica = "manhattan" if escolha in ["1", ""] else "pecas_fora_lugar"
+        print("\n🧠 A*: 1.Manhattan 2.Peças fora lugar 3.Manhattan melhorada")
+        escolha = input("🎯 Escolha (1-3): ").strip()
+        
+        if escolha == "3":
+            heuristica = "manhattan_melhorada"
+        elif escolha == "2":
+            heuristica = "pecas_fora_lugar"
+        else:
+            heuristica = "manhattan"
         
         resultado = self._executar_algoritmo(f"⭐ A* ({heuristica})", executar_a_estrela, 
                                            heuristica=heuristica)
@@ -173,9 +179,15 @@ class SistemaNPuzzle:
             input("\n⏎ Enter para continuar...")
             return
             
-        print("\n🧠 Busca Gulosa: 1.Manhattan 2.Peças fora lugar")
-        escolha = input("🎯 Escolha (1-2): ").strip()
-        heuristica = "manhattan" if escolha in ["1", ""] else "pecas_fora_lugar"
+        print("\n🧠 Busca Gulosa: 1.Manhattan 2.Peças fora lugar 3.Manhattan melhorada")
+        escolha = input("🎯 Escolha (1-3): ").strip()
+        
+        if escolha == "3":
+            heuristica = "manhattan_melhorada"
+        elif escolha == "2":
+            heuristica = "pecas_fora_lugar"
+        else:
+            heuristica = "manhattan"
         
         resultado = self._executar_algoritmo(f"🎯 Gulosa ({heuristica})", executar_busca_gulosa, 
                                            heuristica=heuristica)
@@ -196,40 +208,80 @@ class SistemaNPuzzle:
         self.analisador.limpar_resultados()
         
         # BFS
-        print("1/5 - BFS...")
+        print("1/8 - BFS...")
         resultado_bfs = executar_bfs(self.problema_atual, mostrar_caminho=False)
         self.analisador.adicionar_resultado(resultado_bfs)
         
+        # DFS
+        print("2/8 - DFS...")
+        resultado_dfs = executar_dfs(self.problema_atual, limite_profundidade=25, mostrar_caminho=False)
+        self.analisador.adicionar_resultado(resultado_dfs)
+        
         # IDS  
-        print("2/5 - IDS...")
+        print("3/8 - IDS...")
         resultado_ids = executar_ids(self.problema_atual, limite_profundidade=50, mostrar_caminho=False)
         self.analisador.adicionar_resultado(resultado_ids)
         
         # A* Manhattan
-        print("3/5 - A* (Manhattan)...")
+        print("4/8 - A* (Manhattan)...")
         resultado_a_man = executar_a_estrela(self.problema_atual, heuristica="manhattan", mostrar_caminho=False)
         self.analisador.adicionar_resultado(resultado_a_man)
         
         # A* Peças fora
-        print("4/5 - A* (Peças fora)...")
+        print("5/8 - A* (Peças fora)...")
         resultado_a_peca = executar_a_estrela(self.problema_atual, heuristica="pecas_fora_lugar", mostrar_caminho=False)
         self.analisador.adicionar_resultado(resultado_a_peca)
         
+        # A* Manhattan Melhorada
+        print("6/8 - A* (Manhattan Melhorada)...")
+        resultado_a_mel = executar_a_estrela(self.problema_atual, heuristica="manhattan_melhorada", mostrar_caminho=False)
+        self.analisador.adicionar_resultado(resultado_a_mel)
+        
         # Gulosa Manhattan
-        print("5/5 - Gulosa (Manhattan)...")
-        resultado_g = executar_busca_gulosa(self.problema_atual, heuristica="manhattan", mostrar_caminho=False)
-        self.analisador.adicionar_resultado(resultado_g)
+        print("7/8 - Gulosa (Manhattan)...")
+        resultado_g_man = executar_busca_gulosa(self.problema_atual, heuristica="manhattan", mostrar_caminho=False)
+        self.analisador.adicionar_resultado(resultado_g_man)
+        
+        # Gulosa Peças fora
+        print("8/8 - Gulosa (Peças fora)...")
+        resultado_g_peca = executar_busca_gulosa(self.problema_atual, heuristica="pecas_fora_lugar", mostrar_caminho=False)
+        self.analisador.adicionar_resultado(resultado_g_peca)
         
         print("\n📈 RESULTADOS DA COMPARAÇÃO:")
         print(self.analisador.gerar_tabela_comparativa())
         
-        # Mostrar melhor resultado
-        melhor = self.analisador.obter_melhor_resultado("profundidade")
-        if melhor:
-            print(f"\n🏆 MELHOR ALGORITMO: {melhor.algoritmo}")
-            print(f"   Profundidade: {melhor.profundidade}")
-            print(f"   Nós expandidos: {melhor.nos_expandidos}")
-            print(f"   Tempo: {melhor.tempo_execucao:.4f}s")
+        # Análise detalhada dos melhores algoritmos
+        sucessos = [r for r in self.analisador.resultados if r.sucesso]
+        if sucessos:
+            print(f"\n🏆 ANÁLISE DOS MELHORES ALGORITMOS:")
+            
+            # Melhor por profundidade (solução ótima)
+            melhor_prof = self.analisador.obter_melhor_resultado("profundidade")
+            print(f"🎯 SOLUÇÃO ÓTIMA (menor profundidade): {melhor_prof.algoritmo}")
+            print(f"   Profundidade: {melhor_prof.profundidade} | Nós: {melhor_prof.nos_expandidos} | Tempo: {melhor_prof.tempo_execucao:.4f}s")
+            
+            # Melhor por eficiência (menos nós expandidos)
+            melhor_efic = min(sucessos, key=lambda x: x.nos_expandidos)
+            print(f"🚀 MAIS EFICIENTE (menos nós): {melhor_efic.algoritmo}")
+            print(f"   Profundidade: {melhor_efic.profundidade} | Nós: {melhor_efic.nos_expandidos} | Tempo: {melhor_efic.tempo_execucao:.4f}s")
+            
+            # Melhor por tempo
+            melhor_tempo = self.analisador.obter_melhor_resultado("tempo")
+            print(f"⚡ MAIS RÁPIDO: {melhor_tempo.algoritmo}")
+            print(f"   Profundidade: {melhor_tempo.profundidade} | Nós: {melhor_tempo.nos_expandidos} | Tempo: {melhor_tempo.tempo_execucao:.4f}s")
+            
+            # Recomendação geral
+            melhor_geral = self.analisador.obter_melhor_resultado_score()
+            print(f"\n🌟 MELHOR ALGORITMO GERAL (score balanceado): {melhor_geral.algoritmo}")
+            print(f"   Profundidade: {melhor_geral.profundidade} | Nós: {melhor_geral.nos_expandidos} | Tempo: {melhor_geral.tempo_execucao:.4f}s")
+            
+            print(f"\n💡 RECOMENDAÇÃO:")
+            if melhor_efic.algoritmo.startswith("A*"):
+                print(f"   Use {melhor_efic.algoritmo} - Melhor custo-benefício!")
+            elif melhor_prof.nos_expandidos < 1000:
+                print(f"   Use {melhor_prof.algoritmo} - Garante solução ótima com boa eficiência!")
+            else:
+                print(f"   Use {melhor_tempo.algoritmo} - Melhor para problemas grandes!")
         
         input("\n⏎ Enter para continuar...")
     

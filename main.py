@@ -63,7 +63,7 @@ class SistemaNPuzzle:
             print("🔍 ALGORITMOS:")
             print("  1.🔄 BFS  2.⬇️ DFS  3.🔁 IDS  4.⭐ A*  5.🎯 Gulosa")
             print("⚙️ FUNÇÕES:")
-            print("  6.📊 Comparar (8 algoritmos)  7.📚 Exemplo  8.🎲 Aleatório")
+            print("  6.📊 Comparar (9 algoritmos)  7.📚 Exemplo  8.🎲 Aleatório")
             print("  0.🚪 Sair")
             print(f"{'='*40}")
             
@@ -208,44 +208,49 @@ class SistemaNPuzzle:
         self.analisador.limpar_resultados()
         
         # BFS
-        print("1/8 - BFS...")
+        print("1/9 - BFS...")
         resultado_bfs = executar_bfs(self.problema_atual, mostrar_caminho=False)
         self.analisador.adicionar_resultado(resultado_bfs)
         
         # DFS
-        print("2/8 - DFS...")
+        print("2/9 - DFS...")
         resultado_dfs = executar_dfs(self.problema_atual, limite_profundidade=25, mostrar_caminho=False)
         self.analisador.adicionar_resultado(resultado_dfs)
         
         # IDS  
-        print("3/8 - IDS...")
+        print("3/9 - IDS...")
         resultado_ids = executar_ids(self.problema_atual, limite_profundidade=50, mostrar_caminho=False)
         self.analisador.adicionar_resultado(resultado_ids)
         
         # A* Manhattan
-        print("4/8 - A* (Manhattan)...")
+        print("4/9 - A* (Manhattan)...")
         resultado_a_man = executar_a_estrela(self.problema_atual, heuristica="manhattan", mostrar_caminho=False)
         self.analisador.adicionar_resultado(resultado_a_man)
         
         # A* Peças fora
-        print("5/8 - A* (Peças fora)...")
+        print("5/9 - A* (Peças fora)...")
         resultado_a_peca = executar_a_estrela(self.problema_atual, heuristica="pecas_fora_lugar", mostrar_caminho=False)
         self.analisador.adicionar_resultado(resultado_a_peca)
         
         # A* Manhattan Melhorada
-        print("6/8 - A* (Manhattan Melhorada)...")
+        print("6/9 - A* (Manhattan Melhorada)...")
         resultado_a_mel = executar_a_estrela(self.problema_atual, heuristica="manhattan_melhorada", mostrar_caminho=False)
         self.analisador.adicionar_resultado(resultado_a_mel)
         
         # Gulosa Manhattan
-        print("7/8 - Gulosa (Manhattan)...")
+        print("7/9 - Gulosa (Manhattan)...")
         resultado_g_man = executar_busca_gulosa(self.problema_atual, heuristica="manhattan", mostrar_caminho=False)
         self.analisador.adicionar_resultado(resultado_g_man)
         
         # Gulosa Peças fora
-        print("8/8 - Gulosa (Peças fora)...")
+        print("8/9 - Gulosa (Peças fora)...")
         resultado_g_peca = executar_busca_gulosa(self.problema_atual, heuristica="pecas_fora_lugar", mostrar_caminho=False)
         self.analisador.adicionar_resultado(resultado_g_peca)
+        
+        # Gulosa Manhattan Melhorada
+        print("9/9 - Gulosa (Manhattan Melhorada)...")
+        resultado_g_mel = executar_busca_gulosa(self.problema_atual, heuristica="manhattan_melhorada", mostrar_caminho=False)
+        self.analisador.adicionar_resultado(resultado_g_mel)
         
         print("\n📈 RESULTADOS DA COMPARAÇÃO:")
         print(self.analisador.gerar_tabela_comparativa())

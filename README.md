@@ -1,6 +1,5 @@
 # 🧩 N-Puzzle IA
 
-![N-Puzzle](https://upload.wikimedia.org/wikipedia/commons/8/88/15-puzzle.png)
 
 ![Python](https://img.shields.io/badge/python-3.7%2B-blue) ![Status](https://img.shields.io/badge/status-educacional-success) ![License](https://img.shields.io/badge/license-MIT-green)
 
